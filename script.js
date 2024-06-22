@@ -1,3 +1,10 @@
+function adjustHeightBasedOnWidth() {
+    var specialContainer = document.getElementById('special_bcontainer');
+    if (window.innerWidth <= 800) {
+        specialContainer.style.height = '200vh';
+    }
+}
+
 document.getElementById('navbar_toggle').addEventListener('click', function () {
     document.getElementById('nav').classList.toggle('active');
 });
@@ -40,3 +47,7 @@ document.addEventListener('scroll', () => {
         exploreSection.classList.remove('visible');
     }
 });
+
+window.addEventListener('load', adjustHeightBasedOnWidth);
+
+window.addEventListener('resize', adjustHeightBasedOnWidth);

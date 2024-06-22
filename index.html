@@ -11,30 +11,67 @@
 <body>
     <div id="navbar-container"></div>
     <main class="home_main">
-        <div class="home_background">
-            <h1 class="home_title">When Education Meets Technology</h1>
-        </div>
-        <div class="home_content fade-in">
-            <h1 class="home_subtitle">EXPLORING AND LEARNING WITH ETOZ</h1>
-            <div class="break_line"></div>
-        </div>
-        <div class="explore_section fade-in">
-            <div class="explore_image">
-                <img src="media/img_home2.jpg" alt="Explore Image">
+        <div class="block_container">
+            <div class="home_vcontainer" style="float: right;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/e1AN1YqF_-k?si=a8oDckAS3qMtDCyd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>        
             </div>
-            <div class="explore_text">
-                <h2 class="explore_title">Explore in knowledge</h2>
-                <ul>
-                    <li class="explore_description">Etoz helps to provide video courses of your subject material</li>
-                    <li class="explore_description">Browse the lesson you want to learn.</li>
-                    <li class="explore_description">Supports our Etoz by inviting more users and learning together.</li>
-                </ul>
+            <div class="title_container">
+                <h1 class="home_title1">Education</h1>
+                <h1 class="home_title2">Technology</h1>
             </div>
         </div>
+        <div class="block_container" id="special_bcontainer">
+            <div class="background"></div>
+            <div class="about_slogan">
+                <center>
+                <h1 style="color: #7f5742;">EXPLORING AND LEARNING WITH ETOZ</h1>
+                </center>
+            </div>
+            <div>
+                <img class="about_logo" style="float: left;" src ="media/home1.png">
+            </div>
+            <div class="about_text" style="margin: 10px;">
+                <h2 class="about_title" style="color: #f8b31a;">Explore in Knowledge</h2>
+                <center>
+                <p class="about_text" style="text-align: center; margin:10px; padding: 10;">Etoz helps to provide video courses of your subject material.</p>
+                <p class="about_text" style="text-align: center; margin:10px; padding: 10;">Browse the lesson you want to learn.</p>
+                <p class="about_text" style="text-align: center; margin:10px; padding: 10;">Supports our Etoz by invite more users and learn together</p>
+                </center>
+            </div>
+        </div>
+        <div class="block_container">
+            <div class="up_container">
+                <div class="about_text" style="text-align:left; color: #f8b31a; font-size: clamp(8rem, 3vw + 4rem, 8rem);">
+                    With <span style="color: #7f5742;">100</span> videos and course    
+                    
+                    <div class="browse-box">
+                        <a href="lectures.html" style="text-decoration: none; color: white;">Browse Video/Course</a>
+                    </div>
+                </div>
+            </div>
+            <div class="down_container">
+                <div class="about_text">
+                    <p>You can freely explore and share your ideas with the world.</p>
+                    <p>We offer numerous free courses.</p>
+                    <p>Don't hesitate to ask any questions.</p>
+                </div>
+            </div>
+        </div>    
     </main>
     <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
     <script src="script.js"></script>
     <script>
+        var specialContainer = document.getElementById('special_bcontainer');
+            function adjustHeightBasedOnWidth() {
+                if (window.innerWidth <= 600) { 
+                    specialContainer.style.height = '140vh';
+                }
+                else{
+                    specialContainer.style.height = '90vh';
+                }
+            }
+            window.addEventListener('load', adjustHeightBasedOnWidth);
+            window.addEventListener('resize', adjustHeightBasedOnWidth);
         fetch('navbar.html')
             .then(response => response.text())
             .then(data => {
