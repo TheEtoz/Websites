@@ -515,3 +515,23 @@ body {
     background-color: #ffc005;
     width: 100vw;
 }
+
+.youtube-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.youtube-grid iframe {
+    width: 100%;
+    aspect-ratio: 16/9; /* Maintain 16:9 aspect ratio for each iframe */
+}
+
+@media (max-width: 600px) {
+    .youtube-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+    }
+}
