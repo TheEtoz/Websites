@@ -43,12 +43,24 @@
                 <center><h1 style="margin-top: 2vh;"><a href="mailto:etozforyou@gmail.com" style="color: black; text-decoration: none;">Click Here! Tell us about you, join us now</a></h1></center>
             </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
     <script src="script.js"></script>
     <script>
+        function highlightActiveLink() {
+            const currentPath = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav_link');
+            navLinks.forEach(link => {
+                const linkPath = link.getAttribute('href').split('/').pop();
+                if (currentPath === linkPath) {
+                    link.classList.add('active');
+                }
+            });
+        }
         fetch('navbar.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('navbar-container').innerHTML = data;
+                highlightActiveLink();
             });
     </script>
 </body>

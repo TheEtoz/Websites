@@ -1,7 +1,10 @@
+var specialContainer = document.getElementById('special_bcontainer');
 function adjustHeightBasedOnWidth() {
-    var specialContainer = document.getElementById('special_bcontainer');
-    if (window.innerWidth <= 800) {
-        specialContainer.style.height = '200vh';
+    if (window.innerWidth <= 800) { 
+        specialContainer.style.height = '155vh';
+    }
+    else{
+        specialContainer.style.height = '85vh';
     }
 }
 
@@ -16,16 +19,6 @@ document.getElementById('close_btn').addEventListener('click', function () {
 document.querySelectorAll('.nav_link').forEach(link => {
     link.addEventListener('click', function () {
         document.getElementById('nav').classList.remove('active');
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const currentPath = window.location.pathname.split('/').pop();
-    document.querySelectorAll('.nav_link').forEach(link => {
-        const linkPath = link.getAttribute('href').split('/').pop();
-        if (currentPath === linkPath) {
-            link.classList.add('active');
-        }
     });
 });
 

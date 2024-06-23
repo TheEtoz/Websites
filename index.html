@@ -67,21 +67,24 @@
     <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
     <script src="script.js"></script>
     <script>
-        var specialContainer = document.getElementById('special_bcontainer');
-            function adjustHeightBasedOnWidth() {
-                if (window.innerWidth <= 600) { 
-                    specialContainer.style.height = '155vh';
+        function highlightActiveLink() {
+            const currentPath = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav_link');
+            navLinks.forEach(link => {
+                const linkPath = link.getAttribute('href').split('/').pop();
+                if (currentPath === linkPath) {
+                    link.classList.add('active');
                 }
-                else{
-                    specialContainer.style.height = '90vh';
-                }
-            }
-            window.addEventListener('load', adjustHeightBasedOnWidth);
-            window.addEventListener('resize', adjustHeightBasedOnWidth);
+            });
+        }
+
+        window.addEventListener('load', adjustHeightBasedOnWidth);
+        window.addEventListener('resize', adjustHeightBasedOnWidth);
         fetch('navbar.html')
             .then(response => response.text())
             .then(data => {
                 document.getElementById('navbar-container').innerHTML = data;
+                highlightActiveLink();
             });
     </script>
 </body>
