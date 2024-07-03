@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Canvas YouTube Player</title>
+    </head>
+    <body>
+        <div id="video-container">
+            <div id="player"></div>
+            <canvas id="canvas" width="800" height="600"></canvas>
+        </div>
+        
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <script>
+            let player;
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            function getQueryParams() {
+                const params = new URLSearchParams(window.location.search);
+                return {
+                    id: params.get('id')
+                };
+            }
+
+            const queryParams = getQueryParams();
+
+            function onYouTubeIframeAPIReady()
+            {
+                console.log("WARNING: onYouTubeIframeAPIReady()");
+                player = (
+                    new YT.Player(
+                        'player',
+                        {
+                            height: 0,
+                            width: 0,
+                            videoId: queryParams.id,
+                            events:
+                            {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        }
+                    )
+                );
+            }
+            function onPlayerReady(event)
+            {
+                const video = player.getIframe();
+                video.style.display = 'none';                
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+            }
+            function onPlayerStateChange(event)
+            {
+                if (event.data == YT.PlayerState.PLAYING)
+                {
+                    const drawFrame = (
+                        () => {
+                            if (
+                                player.getPlayerState()
+                                ==
+                                YT.PlayerState.PLAYING)
+                            {
+                                context.drawImage(
+                                    player.getIframe(),
+                                    0, 0, canvas.width, canvas.height
+                                );
+                                requestAnimationFrame(drawFrame);
+                            }
+                        }
+                    );
+                    drawFrame();
+                }
+            }
+        </script>
+    </body>
+</html>
