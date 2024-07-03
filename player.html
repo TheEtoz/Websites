@@ -1,79 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Canvas YouTube Player</title>
-    </head>
-    <body>
-        <div id="video-container">
-            <div id="player"></div>
-            <canvas id="canvas" width="800" height="600"></canvas>
-        </div>
-        
-        <script src="https://www.youtube.com/iframe_api"></script>
-        <script>
-            let player;
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
-
-            function getQueryParams() {
-                const params = new URLSearchParams(window.location.search);
-                return {
-                    id: params.get('id')
-                };
-            }
-
-            const queryParams = getQueryParams();
-
-            function onYouTubeIframeAPIReady()
-            {
-                console.log("WARNING: onYouTubeIframeAPIReady()");
-                player = (
-                    new YT.Player(
-                        'player',
-                        {
-                            height: 0,
-                            width: 0,
-                            videoId: queryParams.id,
-                            events:
-                            {
-                                'onReady': onPlayerReady,
-                                'onStateChange': onPlayerStateChange
-                            }
-                        }
-                    )
-                );
-            }
-            function onPlayerReady(event)
-            {
-                const video = player.getIframe();
-                video.style.display = 'none';                
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-            }
-            function onPlayerStateChange(event)
-            {
-                if (event.data == YT.PlayerState.PLAYING)
-                {
-                    const drawFrame = (
-                        () => {
-                            if (
-                                player.getPlayerState()
-                                ==
-                                YT.PlayerState.PLAYING)
-                            {
-                                context.drawImage(
-                                    player.getIframe(),
-                                    0, 0, canvas.width, canvas.height
-                                );
-                                requestAnimationFrame(drawFrame);
-                            }
-                        }
-                    );
-                    drawFrame();
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETOZ - Video Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="media/logo.png" sizes="16x16" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
+    <script src="script.js"></script>
+    <script>
+        function highlightActiveLink() {
+            const currentPath = 'lectures.html';
+            const navLinks = document.querySelectorAll('.nav_link');
+            navLinks.forEach(link => {
+                const linkPath = link.getAttribute('href').split('/').pop();
+                if (currentPath === linkPath) {
+                    link.classList.add('active');
                 }
-            }
-        </script>
-    </body>
+            });
+        }
+
+        fetch('navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-container').innerHTML = data;
+                highlightActiveLink();
+                document.getElementById('navbar_toggle').addEventListener('click', function () {
+                    document.getElementById('nav').classList.toggle('active');
+                });
+
+                document.getElementById('close_btn').addEventListener('click', function () {
+                    document.getElementById('nav').classList.remove('active');
+                });
+
+                document.querySelectorAll('.nav_link').forEach(link => {
+                    link.addEventListener('click', function () {
+                        document.getElementById('nav').classList.remove('active');
+                    });
+                });
+
+            });
+    </script>
+</body>
 </html>

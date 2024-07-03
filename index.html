@@ -13,9 +13,11 @@
     <main class="home_main">
         <div class="block_container">
             <div class="home_vcontainer" style="float: right;">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/e1AN1YqF_-k?si=a8oDckAS3qMtDCyd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>        
+                <div class="youtube-grid" style="gap: 5px;">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/dMI_ZQRGmeM?si=l0rNKA53sOjYXCk5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
             </div>
-            <div class="title_container">
+                <div class="title_container">
                 <h1 class="home_title1">Education</h1>
                 <h1 class="home_title2">Technology</h1>
             </div>
@@ -42,8 +44,9 @@
         <div class="block_container">
             <div class="up_container">
                 <div class="about_text" style="text-align:left; color: #f8b31a; font-size: clamp(8rem, 3vw + 4rem, 8rem);">
-                    With <span style="color: #7f5742;">100</span> videos and course    
-                    
+                    <h1 style="font-size: clamp(5rem, 4vw + 5rem, 7rem);">
+                        With <span style="color: #7f5742;">100</span> videos and course    
+                    </h1>
                     <div class="browse-box">
                         <a href="lectures.html" style="text-decoration: none; color: white;">Browse Video/Course</a>
                     </div>
@@ -85,6 +88,20 @@
             .then(data => {
                 document.getElementById('navbar-container').innerHTML = data;
                 highlightActiveLink();
+                document.getElementById('navbar_toggle').addEventListener('click', function () {
+                    document.getElementById('nav').classList.toggle('active');
+                });
+
+                document.getElementById('close_btn').addEventListener('click', function () {
+                    document.getElementById('nav').classList.remove('active');
+                });
+
+                document.querySelectorAll('.nav_link').forEach(link => {
+                    link.addEventListener('click', function () {
+                        document.getElementById('nav').classList.remove('active');
+                    });
+                });
+
             });
     </script>
 </body>
