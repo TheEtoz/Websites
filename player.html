@@ -10,9 +10,76 @@
 </head>
 <body>
     <div id="navbar-container"></div>
+    <div id="video-container">
+        <div id="player"></div>
+        <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
     <script src="script.js"></script>
     <script>
+        let player;
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            function getQueryParams() {
+                const params = new URLSearchParams(window.location.search);
+                return {
+                    id: params.get('id')
+                };
+            }
+
+            const queryParams = getQueryParams();
+
+            function onYouTubeIframeAPIReady()
+            {
+                console.log("WARNING: onYouTubeIframeAPIReady()");
+                player = (
+                    new YT.Player(
+                        'player',
+                        {
+                            height: 0,
+                            width: 0,
+                            videoId: queryParams.id,
+                            events:
+                            {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        }
+                    )
+                );
+            }
+            function onPlayerReady(event)
+            {
+                const video = player.getIframe();
+                video.style.display = 'none';                
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+            }
+            function onPlayerStateChange(event)
+            {
+                if (event.data == YT.PlayerState.PLAYING)
+                {
+                    const drawFrame = (
+                        () => {
+                            if (
+                                player.getPlayerState()
+                                ==
+                                YT.PlayerState.PLAYING)
+                            {
+                                context.drawImage(
+                                    player.getIframe(),
+                                    0, 0, canvas.width, canvas.height
+                                );
+                                requestAnimationFrame(drawFrame);
+                            }
+                        }
+                    );
+                    drawFrame();
+                }
+            }
+
         function highlightActiveLink() {
             const currentPath = 'lectures.html';
             const navLinks = document.querySelectorAll('.nav_link');
