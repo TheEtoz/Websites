@@ -7,78 +7,53 @@
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="media/logo.png" sizes="16x16" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@900&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #navbar-container {
+            width: 100%;
+        }
+
+        #video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1; /* Take the remaining space */
+            background-color: black;
+        }
+
+        iframe {
+            margin-top: 10vh;
+            width: 90%;
+            height: 90vh; /* 90% of the viewport height */
+            max-width: 1600px; /* Optional: Maximum width */
+            max-height: 900px; /* Optional: Maximum height */
+            border: none;
+        }
+    </style>
 </head>
 <body>
     <div id="navbar-container"></div>
     <div id="video-container">
-        <div id="player"></div>
-        <canvas id="canvas" width="800" height="600"></canvas>
+        <iframe id="video-player"></iframe>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
-    <script src="script.js"></script>
     <script>
-        let player;
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                id: params.get('id')
+            };
+        }
 
-            function getQueryParams() {
-                const params = new URLSearchParams(window.location.search);
-                return {
-                    id: params.get('id')
-                };
-            }
-
-            const queryParams = getQueryParams();
-
-            function onYouTubeIframeAPIReady()
-            {
-                console.log("WARNING: onYouTubeIframeAPIReady()");
-                player = (
-                    new YT.Player(
-                        'player',
-                        {
-                            height: 0,
-                            width: 0,
-                            videoId: queryParams.id,
-                            events:
-                            {
-                                'onReady': onPlayerReady,
-                                'onStateChange': onPlayerStateChange
-                            }
-                        }
-                    )
-                );
-            }
-            function onPlayerReady(event)
-            {
-                const video = player.getIframe();
-                video.style.display = 'none';                
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-            }
-            function onPlayerStateChange(event)
-            {
-                if (event.data == YT.PlayerState.PLAYING)
-                {
-                    const drawFrame = (
-                        () => {
-                            if (
-                                player.getPlayerState()
-                                ==
-                                YT.PlayerState.PLAYING)
-                            {
-                                context.drawImage(
-                                    player.getIframe(),
-                                    0, 0, canvas.width, canvas.height
-                                );
-                                requestAnimationFrame(drawFrame);
-                            }
-                        }
-                    );
-                    drawFrame();
-                }
-            }
+        const queryParams = getQueryParams();
 
         function highlightActiveLink() {
             const currentPath = 'lectures.html';
@@ -89,6 +64,12 @@
                     link.classList.add('active');
                 }
             });
+        }
+
+        function generateVideo() {
+            // Set the iframe src using the query parameter
+            const iframe = document.getElementById('video-player');
+            iframe.src = `https://www.youtube.com/embed/${queryParams.id}`;
         }
 
         fetch('navbar.html')
@@ -109,8 +90,9 @@
                         document.getElementById('nav').classList.remove('active');
                     });
                 });
-
             });
+
+        generateVideo(); // Call the function to generate the video
     </script>
 </body>
 </html>

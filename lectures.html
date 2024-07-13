@@ -8,30 +8,38 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/7f6d2012d0.js" ></script>
     <style>
-        #container {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-around;
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            align-items: start;
         }
-        .block {
-          width: 200px;
-          margin: 10px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          overflow: hidden;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .block img {
-          width: 100%;
-          height: auto;
-          display: block;
+
+        .video-container img {
+            
+            border-top-left-radius: 24px;
+            max-width: 100%;
+            height: auto;
         }
-        .block-title {
-          padding: 10px;
-          font-size: 16px;
-          text-align: center;
+
+        .title {
+            padding: 10px;
+            font-size: 18px; /* Increased font size */
+            text-align: center;
+            background-image: linear-gradient(90deg, rgba(255,222,89,1) 0%, rgba(255,145,77,1) 100%);; /* Background color */
+            width: 100%; /* Ensures the background covers the full width */
+            box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+            
+            border-bottom-right-radius: 24px;
         }
-      </style>
+    </style>
 </head>
 <body>
     <div id="navbar-container"></div>
@@ -42,49 +50,13 @@
                 <button class="search_button" type="submit"><i class="fas fa-search"></i></button>
             </div>
         </div>
-        <div id="container"></div>
+        <div id="videos" class="video-grid" style="margin-top: 70px; padding: 10px;"></div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>
-    <script src="https://kit.fontawesome.com/7f6d2012d0.js" ></script>
-    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ionicons@5.5.2/dist/ionicons.js"></script>    
     <script>
         const container = document.getElementById('container');
-
-        for (let i = 1; i <= 100; i++) {
-            const block = document.createElement('div');
-            block.className = 'block';
-
-            block.setAttribute('data-id', i);
-
-            const img = document.createElement('img');
-            img.src = 'https://via.placeholder.com/200'; // Placeholder image URL
-            img.alt = `Image ${i}`;
-
-            const title = document.createElement('div');
-            title.className = 'block-title';
-            title.textContent = `Title ${i}`;
-
-            block.appendChild(img);
-            block.appendChild(title);
-            container.appendChild(block);
-        }
-
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const blocks = document.querySelectorAll(".block");
-
-            blocks.forEach(block => {
-                block.addEventListener("click", () => {
-                    const player = block.getAttribute("data-player");
-                    const id = block.getAttribute("data-id");
-                    const url = `player.html?id=${id}`;
-                    window.location.href = url;
-                });
-            });
-        });
-
         function highlightActiveLink() {
-            const currentPath = window.location.pathname.split('/').pop();
+            const currentPath = "lectures.html";
             const navLinks = document.querySelectorAll('.nav_link');
             navLinks.forEach(link => {
                 const linkPath = link.getAttribute('href').split('/').pop();
@@ -92,6 +64,56 @@
                     link.classList.add('active');
                 }
             });
+        }
+
+
+        function generateVideos(videoIDs) {
+            console.log(videoIDs);
+            const videosDiv = document.getElementById('videos');
+            videoIDs.forEach(video => {
+                console.log(video);
+                const id = video.externalId; // Use 'const' to ensure the scope is correct
+
+                // Create a new div for the video container
+                const videoContainer = document.createElement('div');
+                videoContainer.className = 'video-container';
+                videoContainer.setAttribute("data-id", id); // Use 'id' directly
+                //create a new image element
+                const img = document.createElement('img');
+                img.width = '560';
+                img.height = '315';
+                img.src = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+                const title = document.createElement('div');
+                title.className = 'title';
+                title.textContent = `${id}`;
+
+                videoContainer.addEventListener("click", () => {
+                    const url = `player.html?id=${id}`;
+                    window.location.href = url;
+                });
+
+                // Append the image and title to the video container
+                videoContainer.appendChild(img);
+                videoContainer.appendChild(title);
+
+                // Append the video container to the videos div
+                videosDiv.appendChild(videoContainer);
+            });
+        }
+
+
+        // Function to fetch video IDs from the API
+        function fetchVideoIDs() {
+            fetch('http://localhost:3000/video/all') // Replace with your API endpoint
+                .then(response => response.json())
+                .then(data => {
+                    // Assuming the API returns an array of video IDs
+                    generateVideos(data.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching video IDs:', error);
+                });
         }
 
         fetch('navbar.html')
@@ -114,6 +136,7 @@
                 });
 
             });
+        fetchVideoIDs();
     </script>
 </body>
 </html>
