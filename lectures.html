@@ -73,7 +73,7 @@
             videoIDs.forEach(video => {
                 console.log(video);
                 const id = video.externalId; // Use 'const' to ensure the scope is correct
-
+                const name = video.name;
                 // Create a new div for the video container
                 const videoContainer = document.createElement('div');
                 videoContainer.className = 'video-container';
@@ -86,7 +86,7 @@
 
                 const title = document.createElement('div');
                 title.className = 'title';
-                title.textContent = `${id}`;
+                title.textContent = `${name}`;
 
                 videoContainer.addEventListener("click", () => {
                     const url = `player.html?id=${id}`;
